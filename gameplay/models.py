@@ -23,6 +23,7 @@ class GamesQuerySet(models.QuerySet):
 		return self.filter(Q(status='F') | Q(status='S'))
 		
 	
+	
 
 
 class Game(models.Model):
@@ -37,6 +38,7 @@ class Game(models.Model):
 	def board(self):
 		# Returns a 2 dimensional list of move objects, so you can ask for the state of a square at position [y][x]
 		board = [[None for x in range(BOARD_SIZE)] for y in range(BOARD_SIZE)]
+		print(board)
 		for move in self.move_set.all():
 			board[move.y][move.x] = move
 		return board
@@ -68,15 +70,17 @@ class Game(models.Model):
 		if self.move_set.count() >= BOARD_SIZE**2:
 			return "D"
 		return "S" if self.status == "F" else "F"
-			
-		
-	
+				
 	def get_absolute_url(self):
 		return reverse('gameplay_detail', args=[self.id])
 		
 	def __str__(self):
 		return "{} vs {}".format(self.first_player, self.second_player)
 	
+
+
+
+
 
 
 class Move(models.Model):
